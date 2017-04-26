@@ -27,6 +27,11 @@ class Main extends Component {
                 date: Date.now() - 1800000
             }]
         }
+
+        this.handleOpenText = this.handleOpenText.bind(this);
+        this.handeCloseText = this.handeCloseText.bind(this);
+        this.handleSendText = this.handleSendText.bind(this);
+
     }
 
     handleOpenText(event) {
@@ -36,9 +41,38 @@ class Main extends Component {
         })
     }
 
+    handeCloseText(event) {
+        event.preventDefault();
+        this.setState({
+            openText: false
+        })
+    }
+
+    handleSendText(event) {
+        event.preventDefault();
+        var newMessage = {
+            id: uuid.v4(),
+            text: event.target.text.value,
+            picture: 'https://thenextweb.com/files/2010/12/winner1.png',
+            displayName: this.props.user.displayName,
+            username: this.props.user.username,
+            date: Date.now()
+        }
+
+        this.setState({
+            messages: this.state.messages.concat([newMessage]),
+            openText: false
+        })
+    }
+
     renderOpenText() {
         if (this.state.openText) {
-            return <InputText />
+            return (
+                <InputText
+                    onSendText={this.handleSendText}
+                    onCloseText={this.handeCloseText}
+                />
+            )
         }
     }
 
@@ -48,7 +82,7 @@ class Main extends Component {
                 <ProfileBar
                     picture={this.props.user.photoURL}
                     username={this.props.user.email.split('@')[0]}
-                    onOpenText={this.handleOpenText.bind(this)}
+                    onOpenText={this.handleOpenText}
                 />
                 {this.renderOpenText()}
                 <MessageList messages={this.state.messages} />

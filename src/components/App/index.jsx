@@ -13,6 +13,7 @@ class App extends Component {
             user: {
                 photoURL: 'https://thenextweb.com/files/2010/12/winner1.png',
                 email: 'miguel@gmail.com',
+                displayName: 'Carlos Azaustre',
                 onOpenText: false
             }
         }
