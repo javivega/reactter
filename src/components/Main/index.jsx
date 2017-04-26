@@ -16,7 +16,9 @@ class Main extends Component {
                 picture: 'https://thenextweb.com/files/2010/12/winner1.png',
                 displayName: 'Carlos Azaustre',
                 username: 'carlosazaustre',
-                date: Date.now() - 180000
+                date: Date.now() - 180000,
+                retweets: 0,
+                favorites: 0
             },
             {
                 id: uuid.v4(),
@@ -24,7 +26,9 @@ class Main extends Component {
                 picture: 'https://thenextweb.com/files/2010/12/winner1.png',
                 displayName: 'Carlos Azaustre',
                 username: 'carlosazaustre',
-                date: Date.now() - 1800000
+                date: Date.now() - 1800000,
+                retweets: 0,
+                favorites: 0
             }]
         }
 
@@ -32,6 +36,14 @@ class Main extends Component {
         this.handeCloseText = this.handeCloseText.bind(this);
         this.handleSendText = this.handleSendText.bind(this);
 
+    }
+
+    handleRetweet(){
+
+    }
+
+    handleFavorites(){
+        
     }
 
     handleOpenText(event) {
@@ -85,7 +97,11 @@ class Main extends Component {
                     onOpenText={this.handleOpenText}
                 />
                 {this.renderOpenText()}
-                <MessageList messages={this.state.messages} />
+                <MessageList
+                    messages={this.state.messages}
+                    onRetweet={this.handleRetweet}
+                    onFavorites={this.handleFavorites}
+                />
             </div>
         )
     }
