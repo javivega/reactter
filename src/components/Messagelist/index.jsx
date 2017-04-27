@@ -4,9 +4,6 @@ import styles from './messagelist.css'
 class MessageList extends Component {
     constructor(props) {
         super(props);
-
-        this.onFavorites = this.onFavorites.bind(this);
-        this.onRetweet = this.onRetweet.bind(this);
     }
 
     render() {

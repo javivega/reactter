@@ -6,9 +6,10 @@ import uuid from 'uuid'
 
 
 class Main extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
+            user: Object.assign({}, this.props.user, { retweets: [] }, { favorites: [] }),
             openText: false,
             messages: [{
                 id: uuid.v4(),
@@ -35,15 +36,52 @@ class Main extends Component {
         this.handleOpenText = this.handleOpenText.bind(this);
         this.handeCloseText = this.handeCloseText.bind(this);
         this.handleSendText = this.handleSendText.bind(this);
+        this.handleFavorites = this.handleFavorites.bind(this);
+        this.handleRetweet = this.handleRetweet.bind(this);
 
     }
 
-    handleRetweet(){
+    handleRetweet(msgId){
+        let alreadyTweeted = this.state.user.retweets.filter(twt => twt === msgId)
 
+        if(alreadyTweeted.length === 0){
+            let messages = this.state.messages.map(msg => {
+                if(msg.id === msgId){
+                    msg.retweets++
+                }
+                return msg
+            })
+
+            let user = Object.assign({}, this.state.user)
+            user.retweets.push(msgId)
+
+            this.setState({
+                user,
+                messages
+            })
+        }
     }
 
-    handleFavorites(){
-        
+    handleFavorites(msgId){
+        //fav es el elemento actual por el que esta iterando el callback que va por todos y si ese elemento es igual al msgId lo devuelve en un nuevo array
+        let alreadyFavorited = this.state.user.favorites.filter(fav => fav === msgId)
+        //si el array esta vacio
+        if(alreadyFavorited.length === 0){
+            let messages = this.state.messages.map(msg => {
+                if(msg.id === msgId){
+                    msg.favorites++
+                }
+                return msg
+            })
+
+            let user = Object.assign({}, this.state.user)
+            user.favorites.push(msgId)
+
+            this.setState({
+                user,
+                messages
+            })
+        }
     }
 
     handleOpenText(event) {
