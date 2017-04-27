@@ -46,9 +46,9 @@ class Message extends Component {
                 </div>
                 <h3>{this.props.text}</h3>
                 <div className={styles.buttons}>
-                    <div className={styles.icon}>
+                    <div className={styles.icon}
+                            onClick={this.props.onReplyTweet}>
                         <span className='fa fa-reply'></span>
-
                     </div>
                     <div onClick={this.onPressRetweet} className={(this.state.pressRetweet) ? styles.rtGreen : ''}>
                         <span className='fa fa-retweet'></span>
