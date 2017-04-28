@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { HashRouter, Match } from 'react-router'
 import Header from '../Header'
 import styles from './app.css'
 import Main from '../Main'
@@ -22,10 +23,30 @@ class App extends Component {
 
     render() {
         return (
-            <div>
-                <Header />
-                <Main user={this.state.user}/>
-            </div>
+            <HashRouter>
+                <div>
+                    <Header />
+                    <Match exactly pattern="/" render={() => {
+                        if(this.state.user){
+                            return(
+                                <Main user={this.state.user} />
+                            )
+                        } else {
+                            //Render del componente login
+                        }
+                    }}/>
+
+                    <Match pattern="/profile" render={() => {
+                        //Render <Profile/>
+                    }} />
+
+                    <Match pattern="/user/:username" render={( {params} ) => {
+                        //Render <Profile/> pero con otras propiedades pasando params.username
+                    }} />
+                    
+                    
+                </div>
+            </HashRouter>
         )
     }
 }
