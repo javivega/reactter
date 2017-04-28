@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { HashRouter, Match } from 'react-router'
+import Profile from '../Profile'
 import Header from '../Header'
 import styles from './app.css'
 import Main from '../Main'
@@ -15,7 +16,8 @@ class App extends Component {
                 photoURL: 'https://thenextweb.com/files/2010/12/winner1.png',
                 email: 'miguel@gmail.com',
                 displayName: 'Carlos Azaustre',
-                onOpenText: false
+                onOpenText: false,
+                location: 'Madrid, España'
             }
         }
     }
@@ -36,9 +38,16 @@ class App extends Component {
                         }
                     }}/>
 
-                    <Match pattern="/profile" render={() => {
-                        //Render <Profile/>
-                    }} />
+                    <Match pattern="/profile" render={() => (
+                        <Profile
+                            picture={this.state.user.photoURL}
+                            username={this.state.user.email.split('@')[0]}
+                            emailAdress={this.state.user.email}
+                            location={this.state.user.location}
+
+                        />
+                        )
+                    } />
 
                     <Match pattern="/user/:username" render={( {params} ) => {
                         //Render <Profile/> pero con otras propiedades pasando params.username
