@@ -1,8 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import MessageList from '../Messagelist'
 import ProfileBar from '../ProfileBar'
 import InputText from '../InputText'
 import uuid from 'uuid'
+
+const propTypes = {
+    user: PropTypes.object.isRequired
+}
 
 
 class Main extends Component {
@@ -155,5 +159,7 @@ class Main extends Component {
         )
     }
 }
+
+Main.propTypes = propTypes
 
 export default Main

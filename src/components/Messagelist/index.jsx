@@ -1,6 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes} from 'react'
 import Message from '../Message'
 import styles from './messagelist.css'
+
+const propTypes = {
+    messages: PropTypes.arrayOf(PropTypes.object).isRequired,
+    onFavorites: PropTypes.func.isRequired,
+    onReplyTweet: PropTypes.func.isRequired,
+    onRetweet: PropTypes.func.isRequired
+}
+
 class MessageList extends Component {
     constructor(props) {
         super(props);
@@ -9,7 +17,7 @@ class MessageList extends Component {
     render() {
         return (
             <div className={styles.root}>
-                {this.props.messages.map(msg => {
+                {messages.map(msg => {
                     return (
                         <Message
                             key={msg.id}
@@ -20,9 +28,9 @@ class MessageList extends Component {
                             date={msg.date}
                             numRetweets={msg.retweets}
                             numFavorites={msg.favorites}
-                            onRetweet={() => this.props.onRetweet(msg.id)}
-                            onFavorites={() => this.props.onFavorites(msg.id)}
-                            onReplyTweet={() => this.props.onReplyTweet(msg.id, msg.username)}
+                            onRetweet={() => onRetweet(msg.id)}
+                            onFavorites={() => onFavorites(msg.id)}
+                            onReplyTweet={() => onReplyTweet(msg.id, msg.username)}
                         />
                     )
                 }).reverse()}

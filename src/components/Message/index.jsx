@@ -1,11 +1,26 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import styles from './message.css'
 import { Link } from 'react-router'
 import moment from 'moment'
 
+const propTypes = {
+    date: PropTypes.number.isRequired,
+    numRetweets: PropTypes.number.isRequired,
+    numFavorites: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired,
+    picture: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    onFavorites: PropTypes.func.isRequired,
+    onPressFavorites: PropTypes.func.isRequired,
+    onPressRetweet: PropTypes.func.isRequired,
+    onReplyTweet: PropTypes.func.isRequired,
+    onRetweet: PropTypes.func.isRequired
+}
+
 class Message extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             pressFavorite: false,
             pressRetweet: false
@@ -16,24 +31,23 @@ class Message extends Component {
     }
 
 
-    onPressRetweet(){
-        this.props.onRetweet()
+    onPressRetweet() {
+        onRetweet()
         this.setState({
             pressRetweet: true
         })
     }
 
-    onPressFavorites(){
-        this.props.onFavorites()
+    onPressFavorites() {
+        onFavorites()
         this.setState({
             pressFavorite: true
-            
         })
     }
 
     render() {
-        let dateFormat = moment(this.props.date).fromNow()
-        let userLink = `/user/${this.props.username}`
+        let dateFormat = moment(date).fromNow()
+        let userLink = `/user/${username}`
 
         return (
 
@@ -41,33 +55,35 @@ class Message extends Component {
                 <div className={styles.user}>
                     <Link to={userLink}>
                         <figure>
-                            <img className={styles.avatar} src={this.props.picture} alt="" />
+                            <img className={styles.avatar} src={picture} alt="" />
                         </figure>
                     </Link>
-                    <span className={styles.displayName}>{this.props.displayName}</span>
-                    <span className={styles.username}>{this.props.username}</span>
+                    <span className={styles.displayName}>{displayName}</span>
+                    <span className={styles.username}>{username}</span>
                     <span className={styles.date}>{dateFormat}</span>
                 </div>
-                <h3>{this.props.text}</h3>
+                <h3>{text}</h3>
                 <div className={styles.buttons}>
                     <div className={styles.icon}
-                            onClick={this.props.onReplyTweet}>
+                        onClick={onReplyTweet}>
                         <span className='fa fa-reply'></span>
                     </div>
                     <div onClick={this.onPressRetweet} className={(this.state.pressRetweet) ? styles.rtGreen : ''}>
                         <span className='fa fa-retweet'></span>
-                        <span className={styles.num}>{this.props.numRetweets}</span>
+                        <span className={styles.num}>{numRetweets}</span>
                     </div>
                     <div onClick={this.onPressFavorites} className={(this.state.pressFavorite) ? styles.favYellow : ''}>
                         <span className='fa fa-star'></span>
-                        <span className={styles.num}>{this.props.numFavorites}</span>
+                        <span className={styles.num}>{numFavorites}</span>
                     </div>
                 </div>
 
             </div>
 
-        );
+        )
     }
 }
+
+Message.propTypes = propTypes
 
 export default Message;

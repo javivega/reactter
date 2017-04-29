@@ -1,32 +1,30 @@
-import React, { Component } from 'react'
+import React, { PropTypes } from 'react'
 import styles from './profilebar.css'
 import { Link } from 'react-router'
 
-class ProfileBar extends Component {
-    constructor(props) {
-        super(props);
+const propTypes = {
+    picture: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    onOpenText: PropTypes.func.isRequired
+}
 
-    }
+function ProfileBar({ picture, username, onOpenText }) {
 
-
-    render() {
-        return (
-            <div className={styles.root}>
-                <Link to="/profile">
-                    <figure>
-                        <img className={styles.avatar} src={this.props.picture} alt=""/>
-                    </figure>
-                </Link>
-                <span className={styles.username}>Hola @{this.props.username}!</span>
-                <button className={styles.button} onClick={this.props.onOpenText}>
+    return (
+        <div className={styles.root}>
+            <Link to="/profile">
+                <figure>
+                    <img className={styles.avatar} src={picture} alt="" />
+                </figure>
+            </Link>
+            <span className={styles.username}>Hola @{username}!</span>
+            <button className={styles.button} onClick={onOpenText}>
                 <span className="fa fa-lg fa-edit"></span>Tweet!
                 </button>
-            </div>
-        )
-    }
-
-
-
+        </div>
+    )
 }
+
+ProfileBar.propTypes = propTypes
 
 export default ProfileBar
