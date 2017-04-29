@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { HashRouter, Match } from 'react-router'
 import Profile from '../Profile'
+import Login from '../Login'
 import Header from '../Header'
 import styles from './app.css'
 import Main from '../Main'
@@ -12,14 +13,14 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            user: {
-                photoURL: 'https://thenextweb.com/files/2010/12/winner1.png',
-                email: 'miguel@gmail.com',
-                displayName: 'Carlos Azaustre',
-                onOpenText: false,
-                location: 'Madrid, España'
-            }
+            user: null
         }
+
+        this.handleAuth = this.handleAuth.bind(this);
+    }
+
+    handleAuth(){
+        console.log('Auth')
     }
 
 
@@ -34,7 +35,9 @@ class App extends Component {
                                 <Main user={this.state.user} />
                             )
                         } else {
-                            //Render del componente login
+                            return(
+                                <Login onAuth={this.handleAuth}/>
+                            )
                         }
                     }}/>
 
@@ -49,9 +52,12 @@ class App extends Component {
                         )
                     } />
 
-                    <Match pattern="/user/:username" render={( {params} ) => {
-                        //Render <Profile/> pero con otras propiedades pasando params.username
-                    }} />
+                    <Match pattern="/user/:username" render={( {params} ) => (
+                        <Profile
+                            displayName={params.username}
+                            username={params.username}
+                        />
+                    )} />
                     
                     
                 </div>
