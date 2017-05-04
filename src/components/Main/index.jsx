@@ -3,6 +3,7 @@ import MessageList from '../Messagelist'
 import ProfileBar from '../ProfileBar'
 import InputText from '../InputText'
 import uuid from 'uuid'
+import firebase from 'firebase'
 
 const propTypes = {
     user: PropTypes.object.isRequired,
@@ -17,26 +18,7 @@ class Main extends Component {
             user: Object.assign({}, this.props.user, { retweets: [] }, { favorites: [] }),
             openText: false,
             userNameToReply: '',
-            messages: [{
-                id: uuid.v4(),
-                text: 'Mi primer mensaje',
-                picture: 'https://thenextweb.com/files/2010/12/winner1.png',
-                displayName: 'Carlos Azaustre',
-                username: 'carlosazaustre',
-                date: Date.now() - 180000,
-                retweets: 0,
-                favorites: 0
-            },
-            {
-                id: uuid.v4(),
-                text: 'Mi primer mensaje',
-                picture: 'https://thenextweb.com/files/2010/12/winner1.png',
-                displayName: 'Carlos Azaustre',
-                username: 'carlosazaustre',
-                date: Date.now() - 1800000,
-                retweets: 0,
-                favorites: 0
-            }]
+            messages: []
         }
 
         this.handleOpenText = this.handleOpenText.bind(this);
@@ -48,12 +30,25 @@ class Main extends Component {
 
     }
 
-    handleRetweet(msgId){
+
+    componentWillMount() {
+        const mensajesRef = firebase.database.ref().child('messages')
+
+        mensajesRef.on('child_added', snapshot => {
+            this.setState({
+                messages: this.state.messages.concat(snapshot.val()),
+                openText: false
+            })
+        })
+    }
+
+
+    handleRetweet(msgId) {
         let alreadyTweeted = this.state.user.retweets.filter(twt => twt === msgId)
 
-        if(alreadyTweeted.length === 0){
+        if (alreadyTweeted.length === 0) {
             let messages = this.state.messages.map(msg => {
-                if(msg.id === msgId){
+                if (msg.id === msgId) {
                     msg.retweets++
                 }
                 return msg
@@ -69,13 +64,13 @@ class Main extends Component {
         }
     }
 
-    handleFavorites(msgId){
+    handleFavorites(msgId) {
         //fav es el elemento actual por el que esta iterando el callback que va por todos y si ese elemento es igual al msgId lo devuelve en un nuevo array
         let alreadyFavorited = this.state.user.favorites.filter(fav => fav === msgId)
         //si el array esta vacio
-        if(alreadyFavorited.length === 0){
+        if (alreadyFavorited.length === 0) {
             let messages = this.state.messages.map(msg => {
-                if(msg.id === msgId){
+                if (msg.id === msgId) {
                     msg.favorites++
                 }
                 return msg
@@ -113,8 +108,14 @@ class Main extends Component {
             picture: 'https://thenextweb.com/files/2010/12/winner1.png',
             displayName: this.props.user.displayName,
             username: this.props.user.username,
-            date: Date.now()
+            date: Date.now(),
+            favorites: 0,
+            retweets: 0
         }
+
+        const messagesRef = firebase.database().ref().child('messages')
+        const messageID = messagesRef.push()
+        messageID.set(newMessage)
 
         this.setState({
             messages: this.state.messages.concat([newMessage]),

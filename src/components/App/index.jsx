@@ -34,7 +34,7 @@ class App extends Component {
 
 
     handleAuth () {
-        const provider = new firebase.auth.GithubAuthProvider()
+        const provider = new firebase.auth.GoogleAuthProvider()
         firebase.auth().signInWithPopup(provider)
             .then(result => console.log(`${result.user.email} ha iniciado sesion`))
             .catch(error => console.error(error.message))
